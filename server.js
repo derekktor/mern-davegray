@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const path = require("path");
-const { logger } = require("./logs/logger");
+const { logger } = require("./middleware/logger");
 const PORT = process.env.PORT || 3500;
 
 // Log every req, res event
