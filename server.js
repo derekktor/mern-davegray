@@ -7,13 +7,14 @@ const { logger } = require("./middleware/logger");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const errorHandler = require("./middleware/errorHandler");
+const corsOptions = require("./config/corsOptions");
 
 
 // Log every req, res event
 app.use(logger);
 
-// Make it public
-app.use(cors());
+// Make API public
+app.use(cors(corsOptions));
 
 // Process json files
 app.use(express.json());
