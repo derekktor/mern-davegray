@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const app = express();
 const path = require("path");
 const PORT = process.env.PORT || 3500;
+console.log();
 
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
@@ -24,10 +25,11 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 // Parse cookies
-app.use(cookieParser);
+app.use(cookieParser());
 
 app.use("/", express.static(path.join(__dirname, "public")));
 app.use("/", require("./routes/root"));
+app.use("/users", require("./routes/userRoutes"));
 
 // Handle non-existing paths
 app.all("*", (req, res) => {
@@ -41,6 +43,7 @@ app.all("*", (req, res) => {
     }
 })
 
+// Handle errors
 app.use(errorHandler)
 
 // Show logs when connected to DB
