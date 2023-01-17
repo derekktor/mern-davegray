@@ -114,8 +114,8 @@ const deleteUser = asyncHandler(async (req, res) => {
     }
     
     // Check if any note exists for a given user id
-    const notes = await Note.find({user: id}).lean().exec();
-    if (notes?.length) {
+    const note = await Note.findOne({user: id}).lean().exec();
+    if (note) {
         return res.status(400).json({message: `User has notes!!!`});
     }
 
