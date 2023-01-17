@@ -12,7 +12,8 @@ const getAllUsers = asyncHandler(async (req, res) => {
     // Get all users but without their password and in pretty json format
     const users = await User.find().select("-password").lean()
 
-    if (!users) {
+    // Check if there are any users
+    if (!users?.length) {
         return res.status(400).json({message: "No users found!"});
     }
 
@@ -29,7 +30,7 @@ const createUser = asyncHandler(async (req, res) => {
 
     // Check if fields are filled
     if (!username || !password || !Array.isArray(roles) || !roles.length) {
-        return res.status(400).json({message: "Please fill every field!!!"});
+        return res.status(400).json({message: "Please fill username, password, roles fields!!!"});
     }
 
     // Check for duplicate

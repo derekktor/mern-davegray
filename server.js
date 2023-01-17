@@ -24,6 +24,9 @@ app.use(cors(corsOptions));
 // Process json files
 app.use(express.json());
 
+// // Process url encoded
+// app.use(express.urlencoded({extended: true}));
+
 // Parse cookies
 app.use(cookieParser());
 
