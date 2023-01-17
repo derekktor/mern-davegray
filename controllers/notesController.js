@@ -94,7 +94,28 @@ const updateNote = asyncHandler(async (req, res) => {
  * @route DELETE /notes
  * @access Private
  */
-const deleteNote = asyncHandler(async (req, res) => {});
+const deleteNote = asyncHandler(async (req, res) => {
+    // Extract note id
+    const {id} = req.body;
+
+    // Check if id was provided
+    if (!id) {
+  res.status(400).json({ message: `Please provide id field!` });
+    }
+
+    // Check if note exists
+    const noteDB = await Note.findById(id).exec();
+    if (!noteDB) {
+        return res.status(400).json({ message: `Note doesn't exist!` });
+    }
+
+    // Delete from DB
+    const result = await noteDB.deleteOne();
+    
+    // Log result
+    const reply = `Note [${result.title}] is deleted successfully!`;
+    res.status(200).json(reply);
+});
 
 module.exports = {
   getAllNotes,
