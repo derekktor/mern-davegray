@@ -65,7 +65,7 @@ const updateUser = asyncHandler(async (req, res) => {
 
     // Check if fields are correct
     if (!id || !username || !Array.isArray(roles) || !roles.length || typeof active !== "boolean") {
-        return res.status(400).json({message: "Please provide every field in its correct format!!!"});
+        return res.status(400).json({message: "Please provide id, username, roles, active field data in correct format!!!"});
     }
 
     // Find user
@@ -79,7 +79,7 @@ const updateUser = asyncHandler(async (req, res) => {
     // Check for duplicate
     const duplicate = await User.findOne({username}).lean().exec();
     if (duplicate && duplicate?._id.toString() !== id) {
-        return res.status(409).json({message: `${username} already exists!!!`});
+        return res.status(409).json({message: `Username ${username} already exists!!!`});
     }
 
     // Update user info
