@@ -51,8 +51,8 @@ const createNote = asyncHandler(async (req, res) => {
   const newNote = await Note.create(noteData);
 
   // Log result
-  return res
-    .status(400)
+  res
+    .status(200)
     .json({ message: `Note is created successfully for ${userDB.username}` });
 });
 
@@ -61,7 +61,33 @@ const createNote = asyncHandler(async (req, res) => {
  * @route PATCH /notes
  * @access Private
  */
-const updateNote = asyncHandler(async (req, res) => {});
+const updateNote = asyncHandler(async (req, res) => {
+  // Extract note info
+  const { id, title, text, completed } = req.body;
+
+  // Check if all fields are filled
+  if (!id || !title || !text || typeof completed !== "boolean") {
+    return res.status(400).json({
+      message: `Please provide noteId, title, text, completed fields!`,
+    });
+  }
+
+  // Check if note exists
+  const noteDB = await Note.findById(id).exec();
+  if (!noteDB) {
+    return res.status(400).json({ message: `Note doesn't exist!` });
+  }
+
+  // Save to DB
+  noteDB.title = title;
+  noteDB.text = text;
+  noteDB.completed = completed;
+
+  const updatedNote = await noteDB.save();
+
+  // Log result
+  res.status(200).json({ message: `Note is updated successfully!` });
+});
 
 /**
  * @desc Delete note
